@@ -1,0 +1,102 @@
+<div class="modal fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="modal-dialog">
+      <div class="modal-content bg-white rounded-lg shadow-xl px-8 pt-6 pb-8 mb-4 w-full max-w-lg">  
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              Name:
+              <input type="text" formControlName="name"
+                     class="h-7 mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            </label>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              Expiration Type:
+              <select formControlName="expiration_type"
+                      class="h-7 form-select mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="expirable">Expirable</option>
+                <option value="non_expirable">Non Expirable</option>
+              </select>
+            </label>
+          </div>
+          <div class="mb-4">
+            <table class="min-w-full bg-white">
+              <thead>
+                <tr class="bg-blue-100">
+                  <th >Field</th>
+                  <th >Value</th>
+                  <th >Date</th>
+                  <th >Delete</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="fields">
+                <tr *ngFor="let field of fields.controls; let i = index" [formGroupName]="i">
+                  <td>
+                    <input type="text" formControlName="name"
+                           class="h-7 form-input mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                  </td>
+                  <td>
+                    <input *ngIf="!productForm.get('fields.' + i + '.is_date')?.value" type="text"
+                           formControlName="value"
+                           class="h-7 form-input mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <input *ngIf="productForm.get('fields.' + i + '.is_date')?.value" type="date"
+                           formControlName="value"
+                           class="h-7 form-input mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                  </td>
+                  <td class="px-4 py-2 text-center">
+                    <input type="checkbox" formControlName="is_date" (change)="toggleDatePicker(i)"
+                           class="h-7 form-checkbox h-5 w-5 text-indigo-600">
+                  </td>
+                  <td class="px-4 py-2 text-center">
+                    <button type="button" (click)="removeField(i)"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                      Del
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="flex justify-end items-center mb-2">
+              <button type="button" (click)="addField()"
+                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Add
+              </button>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              Manufacture Date:
+              <input type="date" formControlName="manufacture_date"
+                     class="h-7 form-input mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            </label>
+          </div>
+          <div class="mb-4" *ngIf="productForm.get('expiration_type')?.value !== 'non_expirable'">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              Expiration Date:
+              <input type="date" formControlName="expiration_date"
+                     class="h-7 form-input mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            </label>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              Comment:
+              <textarea formControlName="comment"
+                        class="form-input mt-1 block w-full border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
+            </label>
+          </div>
+  
+          <div class="flex justify-end">
+            <button type="submit" (click)="closeModal()"
+                class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-6 mr-2 rounded focus:outline-none focus:shadow-outline">
+            Close
+            </button>
+            <button type="submit"
+                    class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
