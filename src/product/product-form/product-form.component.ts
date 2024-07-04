@@ -117,11 +117,18 @@ export class ProductFormComponent implements OnInit {
   onSubmit() {
     const formValue = this.productForm.value;
 
+    let categoryId;
+    if (formValue.expiration_type === 'expirable') {
+      categoryId = 1;
+    } else if (formValue.expiration_type === 'non_expirable') {
+      categoryId = 2;
+    }
+
     const body = {
       id: formValue.id,
       name: formValue.name,
       expiration_type: formValue.expiration_type,
-      category_id: formValue.category.id,
+      category_id: categoryId,
       fields: formValue.fields.map((field: any) => ({
         name: field.name,
         value: field.value,
